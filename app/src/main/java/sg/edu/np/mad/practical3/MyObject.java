@@ -1,7 +1,5 @@
 package sg.edu.np.mad.practical3;
 
-import android.widget.ImageView;
-
 public class MyObject {
     private int myImageView;
     private String header;

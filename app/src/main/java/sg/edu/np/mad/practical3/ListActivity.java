@@ -24,8 +24,8 @@ public class ListActivity extends AppCompatActivity {
 
     String UserDescription;
     ArrayList<User> UserList = new ArrayList<User>();
-    ArrayList<MyObject> mylstObj = new ArrayList<>();
-    ArrayList<MyObject>myslistobj=new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,53 +33,26 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         createRandomUsers(UserList);
 
-        for (int i = 0; i < 20; i++) {
 
-            String UN = UserList.get(i).getName();
-            String Desc = UserList.get(i).getDescription();
-            MyObject myObj = new MyObject();
-            myObj.setHeader(String.valueOf(UN));
-            myObj.setDesc(String.valueOf(Desc));
-            myObj.setMyImageView(R.mipmap.ic_launcher_round);
-            if(FindLastcharacter(UN)=='7')
-            {
-                Log.v(TITLE, "7-11");
-                myslistobj.add(myObj);
-            }
-            else
-            {
-                myObj=null;
-                myslistobj.add(myObj);
-            }
-
-
-            mylstObj.add(myObj);
-        }
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        customAdapter myAdapter = new customAdapter(mylstObj);
-        customAdapter2 myAdapter1=new customAdapter2(myslistobj);
+        customAdapter myAdapter = new customAdapter(UserList);
+
         LinearLayoutManager mLayoutmanager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutmanager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myAdapter);
-        for(int i = 0; i < mylstObj.size(); i++)
-        {
-            if(mylstObj.get(i) == myslistobj.get(i))
-            {
-                recyclerView.setAdapter(myAdapter1);
+
+
+        myAdapter.setOnItemClickListener(new customAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(int position) {
+
+                User Me = UserList.get(position);
+                queryOTP(Me);
             }
-        }
-        for (int i = 0; i < 20; i++) {
-            myAdapter.setOnItemClickListener(new customAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(MyObject obj) {
-                    String Header = obj.getHeader();
-                    User Me = FindUser(UserList, Header);
-                    queryOTP(Me);
-                }
-            });
-        }
+        });
     }
+
 
 
     private void queryOTP(User user) {
